@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ExpenseTracker.Data.Expense>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date_Added)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date_Added)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Title)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>*@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ExpenseID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ExpenseID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ExpenseID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
