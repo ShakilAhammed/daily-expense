@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpenseTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211214210751_InitDatabaseWithExpenseAndCategory")]
-    partial class InitDatabaseWithExpenseAndCategory
+    [Migration("20211215193702_InitWithExpenseAndCategoryModel")]
+    partial class InitWithExpenseAndCategoryModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,7 +31,12 @@ namespace ExpenseTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("CategoryID");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
@@ -42,8 +47,8 @@ namespace ExpenseTracker.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("CategoryID")
                         .HasColumnType("uniqueidentifier");
@@ -51,9 +56,14 @@ namespace ExpenseTracker.Migrations
                     b.Property<DateTime>("Date_Added")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ExpenseID");
 
                     b.HasIndex("CategoryID");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Expenses");
                 });
@@ -258,6 +268,15 @@ namespace ExpenseTracker.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ExpenseTracker.Data.Category", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ExpenseTracker.Data.Expense", b =>
                 {
                     b.HasOne("ExpenseTracker.Data.Category", "Category")
@@ -266,7 +285,13 @@ namespace ExpenseTracker.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -17,7 +17,7 @@
             <input type="hidden" asp-for="ExpenseID" />
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" min="0" class="form-control" />
+                <input asp-for="Amount" type="number" min="0" class="form-control" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Date_Added" class="control-label"></label>
-                <input asp-for="Date_Added" class="form-control" />
+                <input id="datepicker" asp-for="Date_Added" class="form-control" />
                 <span asp-validation-for="Date_Added" class="text-danger"></span>
             </div>
             @*Thh:mm*@
@@ -45,4 +45,8 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+   
+</script>
+
 }
